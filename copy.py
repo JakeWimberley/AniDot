@@ -114,7 +114,7 @@ while True:
             pygame.quit()
             break
         if currentEvent.dict['unicode'] == ' ':
-            intStr = '{0:04d}'.format(random.randint(0,9999))
+            intStr = '{0:04x}'.format(random.randint(0,2**16-1))
             print 'int is {0:s}'.format(intStr)
             intBlock = fontx.makeBlockFromString(intStr)
             board.startAnimation()

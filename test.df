@@ -15,7 +15,7 @@ I5
 sS'characters'
 p6
 (dp7
-V
+Va
 p8
 (dp9
 S'dimX'
@@ -27,21 +27,21 @@ I7
 sS'glyph'
 p12
 (lp13
-S'     '
+S'  X  '
 p14
-aS'    X'
+aS' X X '
 p15
-aS'    X'
+aS' X X '
 p16
-aS' X  X'
+aS'X   X'
 p17
 aS'XXXXX'
 p18
-aS' X   '
+aS'X   X'
 p19
-aS'     '
+aS'X   X'
 p20
-assV1
+assVc
 p21
 (dp22
 g10
@@ -50,21 +50,21 @@ sg11
 I7
 sg12
 (lp23
-S'  X  '
+S' XXX '
 p24
-aS' XX  '
+aS'X   X'
 p25
-aS'  X  '
+aS'X    '
 p26
-aS'  X  '
+aS'X    '
 p27
-aS'  X  '
+aS'X    '
 p28
-aS'  X  '
+aS'X   X'
 p29
-aS'  X  '
+aS' XXX '
 p30
-assV0
+assVb
 p31
 (dp32
 g10
@@ -73,21 +73,21 @@ sg11
 I7
 sg12
 (lp33
-S'  X  '
+S'XX   '
 p34
-aS' X X '
+aS'X X  '
 p35
-aS'X   X'
+aS'X X  '
 p36
-aS'X   X'
+aS'XXXX '
 p37
 aS'X   X'
 p38
-aS' X X '
+aS'X   X'
 p39
-aS'  X  '
+aS'XXXX '
 p40
-assV3
+assVe
 p41
 (dp42
 g10
@@ -96,21 +96,21 @@ sg11
 I7
 sg12
 (lp43
-S' XXX '
+S'XXX  '
 p44
-aS'X   X'
+aS'X    '
 p45
-aS'    X'
+aS'X    '
 p46
-aS' XXX '
+aS'XXXX '
 p47
-aS'    X'
+aS'X    '
 p48
-aS'X   X'
+aS'X    '
 p49
-aS' XXX '
+aS'XXXXX'
 p50
-assV2
+assVd
 p51
 (dp52
 g10
@@ -119,21 +119,21 @@ sg11
 I7
 sg12
 (lp53
-S' XXX '
+S'XX   '
 p54
-aS'X   X'
+aS'X X  '
 p55
-aS'    X'
+aS'X  X '
 p56
-aS'  XX '
+aS'X   X'
 p57
-aS' X   '
+aS'X   X'
 p58
-aS'X    '
+aS'X  X '
 p59
-aS'XXXXX'
+aS'XXX  '
 p60
-assV5
+assVf
 p61
 (dp62
 g10
@@ -148,132 +148,273 @@ aS'X    '
 p65
 aS'X    '
 p66
-aS' XXX '
+aS'XXX  '
 p67
-aS'    X'
+aS'X    '
 p68
-aS'X   X'
+aS'X    '
 p69
-aS' XXX '
+aS'X    '
 p70
-assV4
+assV
 p71
 (dp72
-g10
+S'dimX'
+p73
 I5
-sg11
-I7
-sg12
-(lp73
-S'   X '
+sS'dimY'
 p74
-aS'  X  '
-p75
-aS' X   '
-p76
-aS'X  X '
-p77
-aS'XXXXX'
-p78
-aS'   X '
-p79
-aS'   X '
-p80
-assV7
-p81
-(dp82
-g10
-I5
-sg11
 I7
-sg12
-(lp83
-S'XXXXX'
+sS'glyph'
+p75
+(lp76
+S'     '
+p77
+aS'    X'
+p78
+aS'    X'
+p79
+aS' X  X'
+p80
+aS'XXXXX'
+p81
+aS' X   '
+p82
+aS'     '
+p83
+assV1
 p84
-aS'    X'
-p85
-aS'    X'
-p86
-aS'   X '
+(dp85
+g73
+I5
+sg74
+I7
+sg75
+(lp86
+S'  X  '
 p87
-aS'   X '
+aS' XX  '
 p88
 aS'  X  '
 p89
 aS'  X  '
 p90
-assV6
+aS'  X  '
 p91
-(dp92
-g10
-I5
-sg11
-I7
-sg12
-(lp93
-S'  X  '
+aS'  X  '
+p92
+aS'  X  '
+p93
+assV0
 p94
-aS' X   '
-p95
-aS'X    '
-p96
-aS'X XX '
+(dp95
+g73
+I5
+sg74
+I7
+sg75
+(lp96
+S'  X  '
 p97
-aS'XX  X'
+aS' X X '
 p98
 aS'X   X'
 p99
-aS' XXX '
+aS'X   X'
 p100
-assV9
+aS'X   X'
 p101
-(dp102
-g10
-I5
-sg11
-I7
-sg12
-(lp103
-S' XXX '
+aS' X X '
+p102
+aS'  X  '
+p103
+assV3
 p104
-aS'X   X'
-p105
-aS'X  XX'
-p106
-aS' XX X'
-p107
-aS'    X'
-p108
-aS'   X '
-p109
-aS'  X  '
-p110
-assV8
-p111
-(dp112
-g10
+(dp105
+g73
 I5
-sg11
+sg74
 I7
-sg12
-(lp113
+sg75
+(lp106
 S' XXX '
-p114
+p107
 aS'X   X'
-p115
-aS' X X '
-p116
-aS'  X  '
-p117
-aS' X X '
-p118
-aS'X   X'
-p119
+p108
+aS'    X'
+p109
 aS' XXX '
+p110
+aS'    X'
+p111
+aS'X   X'
+p112
+aS' XXX '
+p113
+assV2
+p114
+(dp115
+g73
+I5
+sg74
+I7
+sg75
+(lp116
+S' XXX '
+p117
+aS'X   X'
+p118
+aS'    X'
+p119
+aS'  XX '
 p120
-asssS'baselineY'
+aS' X   '
 p121
-NsS'maxDimY'
+aS'X    '
 p122
+aS'XXXXX'
+p123
+assV5
+p124
+(dp125
+g73
+I5
+sg74
+I7
+sg75
+(lp126
+S'XXXXX'
+p127
+aS'X    '
+p128
+aS'X    '
+p129
+aS' XXX '
+p130
+aS'    X'
+p131
+aS'X   X'
+p132
+aS' XXX '
+p133
+assV4
+p134
+(dp135
+g73
+I5
+sg74
+I7
+sg75
+(lp136
+S'   X '
+p137
+aS'  X  '
+p138
+aS' X   '
+p139
+aS'X  X '
+p140
+aS'XXXXX'
+p141
+aS'   X '
+p142
+aS'   X '
+p143
+assV7
+p144
+(dp145
+g73
+I5
+sg74
+I7
+sg75
+(lp146
+S'XXXXX'
+p147
+aS'    X'
+p148
+aS'    X'
+p149
+aS'   X '
+p150
+aS'   X '
+p151
+aS'  X  '
+p152
+aS'  X  '
+p153
+assV6
+p154
+(dp155
+g73
+I5
+sg74
+I7
+sg75
+(lp156
+S'  X  '
+p157
+aS' X   '
+p158
+aS'X    '
+p159
+aS'X XX '
+p160
+aS'XX  X'
+p161
+aS'X   X'
+p162
+aS' XXX '
+p163
+assV9
+p164
+(dp165
+g73
+I5
+sg74
+I7
+sg75
+(lp166
+S' XXX '
+p167
+aS'X   X'
+p168
+aS'X  XX'
+p169
+aS' XX X'
+p170
+aS'    X'
+p171
+aS'   X '
+p172
+aS'  X  '
+p173
+assV8
+p174
+(dp175
+g73
+I5
+sg74
+I7
+sg75
+(lp176
+S' XXX '
+p177
+aS'X   X'
+p178
+aS' X X '
+p179
+aS'  X  '
+p180
+aS' X X '
+p181
+aS'X   X'
+p182
+aS' XXX '
+p183
+asssS'baselineY'
+p184
+NsS'maxDimY'
+p185
 I7
 sb.
