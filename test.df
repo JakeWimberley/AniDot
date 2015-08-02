@@ -1,0 +1,279 @@
+(ianidot
+Font
+p0
+(dp1
+S'name'
+p2
+S'test'
+p3
+sS'defaultGap'
+p4
+I1
+sS'maxDimX'
+p5
+I5
+sS'characters'
+p6
+(dp7
+V
+p8
+(dp9
+S'dimX'
+p10
+I5
+sS'dimY'
+p11
+I7
+sS'glyph'
+p12
+(lp13
+S'     '
+p14
+aS'    X'
+p15
+aS'    X'
+p16
+aS' X  X'
+p17
+aS'XXXXX'
+p18
+aS' X   '
+p19
+aS'     '
+p20
+assV1
+p21
+(dp22
+g10
+I5
+sg11
+I7
+sg12
+(lp23
+S'  X  '
+p24
+aS' XX  '
+p25
+aS'  X  '
+p26
+aS'  X  '
+p27
+aS'  X  '
+p28
+aS'  X  '
+p29
+aS'  X  '
+p30
+assV0
+p31
+(dp32
+g10
+I5
+sg11
+I7
+sg12
+(lp33
+S'  X  '
+p34
+aS' X X '
+p35
+aS'X   X'
+p36
+aS'X   X'
+p37
+aS'X   X'
+p38
+aS' X X '
+p39
+aS'  X  '
+p40
+assV3
+p41
+(dp42
+g10
+I5
+sg11
+I7
+sg12
+(lp43
+S' XXX '
+p44
+aS'X   X'
+p45
+aS'    X'
+p46
+aS' XXX '
+p47
+aS'    X'
+p48
+aS'X   X'
+p49
+aS' XXX '
+p50
+assV2
+p51
+(dp52
+g10
+I5
+sg11
+I7
+sg12
+(lp53
+S' XXX '
+p54
+aS'X   X'
+p55
+aS'    X'
+p56
+aS'  XX '
+p57
+aS' X   '
+p58
+aS'X    '
+p59
+aS'XXXXX'
+p60
+assV5
+p61
+(dp62
+g10
+I5
+sg11
+I7
+sg12
+(lp63
+S'XXXXX'
+p64
+aS'X    '
+p65
+aS'X    '
+p66
+aS' XXX '
+p67
+aS'    X'
+p68
+aS'X   X'
+p69
+aS' XXX '
+p70
+assV4
+p71
+(dp72
+g10
+I5
+sg11
+I7
+sg12
+(lp73
+S'   X '
+p74
+aS'  X  '
+p75
+aS' X   '
+p76
+aS'X  X '
+p77
+aS'XXXXX'
+p78
+aS'   X '
+p79
+aS'   X '
+p80
+assV7
+p81
+(dp82
+g10
+I5
+sg11
+I7
+sg12
+(lp83
+S'XXXXX'
+p84
+aS'    X'
+p85
+aS'    X'
+p86
+aS'   X '
+p87
+aS'   X '
+p88
+aS'  X  '
+p89
+aS'  X  '
+p90
+assV6
+p91
+(dp92
+g10
+I5
+sg11
+I7
+sg12
+(lp93
+S'  X  '
+p94
+aS' X   '
+p95
+aS'X    '
+p96
+aS'X XX '
+p97
+aS'XX  X'
+p98
+aS'X   X'
+p99
+aS' XXX '
+p100
+assV9
+p101
+(dp102
+g10
+I5
+sg11
+I7
+sg12
+(lp103
+S' XXX '
+p104
+aS'X   X'
+p105
+aS'X  XX'
+p106
+aS' XX X'
+p107
+aS'    X'
+p108
+aS'   X '
+p109
+aS'  X  '
+p110
+assV8
+p111
+(dp112
+g10
+I5
+sg11
+I7
+sg12
+(lp113
+S' XXX '
+p114
+aS'X   X'
+p115
+aS' X X '
+p116
+aS'  X  '
+p117
+aS' X X '
+p118
+aS'X   X'
+p119
+aS' XXX '
+p120
+asssS'baselineY'
+p121
+NsS'maxDimY'
+p122
+I7
+sb.
