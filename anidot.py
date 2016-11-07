@@ -266,3 +266,124 @@ class Font():
 
     def saveToFile(self,name):
         pickle.dump(self,open(name,'wb'))
+
+
+class Image():
+
+    kind = 'Image'
+    def __init__(self,name,cellArray,fromfile=None):
+        if fromfile is not None: # TODO some kind of security
+            fileObj = pickle.load(open(fromfile,'rb'))
+            try:
+                if fileObj.kind != 'Image':
+                    raise AttributeError # not sure if this is best
+            except:
+                return
+            self.name = fileObj.name
+            self.cellArray = fileObj.cellArray
+        else:
+            self.name = name
+            self.cellArray = cellArray
+
+    def makeFromBoard(self,boardObj):
+        self.cellArray = []
+        for dotRow in boardObj.dotArray:
+            imageRow = []
+            for dot in dotRow:
+                imageRow.append(dot.activated)
+            self.cellArray.append(imageRow)
+
+    def saveToFile(self,name):
+        pickle.dump(self,open(name,'wb'))
+
+    def flipCell(self,r,c):
+        self.cellArray[r][c] ^= 1
+        return self.cellArray[r][c]
+
+
+class TextField():
+
+    def __init__(self,text,font,xpos,ypos,clear=False):
+        self.text = text
+        self.font = font # Font instance
+        self.xpos = xpos
+        self.ypos = ypos
+        self.clear = clear # if True, clear board when loaded
+
+
+class Sequence():
+    """
+    A predefined series of actions to be played back.
+    Actions are:
+      LoadImage - supply arg to load from filename or object - otherwise Image obj is saved in sequence
+      ShowText - arg to load from filename/object - otherwise Board.getArea() array saved in sequence
+      Pause - do nothing for specified number of seconds (arg)
+      Restart - go back immediately to first action
+    If a Restart is not encountered the sequence will stop after all actions have been executed.
+    """
+
+    kind = 'Sequence'
+    # actionArgs defines the permissible actions, and types for each's argument.
+    actionArgs = {
+        'LoadImage': (str, Image),
+        'ShowText': (str, Font),
+        'Pause': (float),
+        'Restart': ()
+    }
+    def __init__(self,name,fromfile=None):
+        if fromfile is not None: # TODO some kind of security
+            fileObj = pickle.load(open(fromfile,'rb'))
+            try:
+                if fileObj.kind != 'Sequence':
+                    raise RuntimeError('File does not contain a Sequence object')
+            except:
+                return
+            self.name = fileObj.name
+            self.actions = fileObj.actions
+        else:
+            self.name = name
+            self.actions = []
+
+    def addAction(self,action,arg=None,position=None):
+        """
+        :param action: one of the predefined action names, as string
+        :param arg: filename, object, time spec, string, list
+        :param position: Where to put the action in the sequence. If None, append.
+        :return: None
+        """
+        if action not in actionArgs:
+            raise RuntimeError('Invalid action')
+            return
+        if action == 'LoadImage':
+            if isinstance(arg,str):
+                pass
+                # load from filename
+            elif isinstance(arg,Image):
+                self.actions.append(arg)
+            else:
+                raise RuntimeError('Supplied argument is invalid for LoadImage action')
+        if action == 'ShowText':
+            if isinstance(arg,str):
+                # load from filename
+                pass
+            elif isinstance(arg,Image):
+                pass
+                # use image object
+            else:
+                raise RuntimeError('Supplied argument is invalid for LoadImage action')
+        if action == 'Pause':
+            if isinstance(arg,float):
+                # set value
+                pass
+            else:
+                raise RuntimeError('Supplied argument is invalid for Pause action')
+        #self.actions.append or whatever
+
+
+    def next(self,boardObj,arg=None):
+        """
+        Perform next action in self.actions on boardObj. arg is used to link action to an existing file or object.
+        :param boardObj: An object of class Board on which the action is to be played.
+        :param arg: If filename, load appropriate object from file. If object, use Image or Font object for this action.
+        :return: None
+        """
