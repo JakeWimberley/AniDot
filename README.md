@@ -1,6 +1,8 @@
-AniDot
+# AniDot
 by Jake Wimberley
 (last name without the y) + j at gmail dot com
+
+## Introduction
 
 I have been fascinated by electromechanical "flip-dot" (or "flip-disc")
 displays for a long time. AniDot is a library to visually simulate these types
