@@ -3,7 +3,7 @@ import anidot
 import random
 
 frameRate = 1200
-spriteSheetFile = '/home/jcw/dev/megamax-10px.png'
+spriteSheetFile = 'megamax-10px.png'
 fontFile = 'test.df'
 
 fontDef = {
