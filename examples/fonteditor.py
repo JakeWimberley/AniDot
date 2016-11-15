@@ -3,7 +3,7 @@ import pygame
 import anidot
 
 frameRate = 1200
-spriteSheetFile = '/home/jcw/dev/ferranti.png'
+spriteSheetFile = 'ferranti20px.png'
 fontFile = 'test.df'
 
 pygame.init()
