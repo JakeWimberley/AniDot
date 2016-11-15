@@ -56,9 +56,26 @@ Depending on how realistic you want the animation to look, and how powerful
 your graphics adapter is, you can choose as many or as few frames as you like.
 I created some spritesheets in SVG format, that you can use to make raster
 sheets of any size you wish. Of course, you can make your own spritesheets
-using another method, if you like.
+using another method.
 
 So after fetching the package, the first step is to create raster spritesheets
-(e.g. PNG format). Inkscape's *Export Bitmap* feature does a great job of this
-if you choose to use the included SVGs. You will need to note the dimensions
-of each frame as this is critical to making the animation work.
+(PNG, GIF, etc.). Inkscape's *Export PNG Image* or *Export Bitmap* feature does
+a great job of this if you choose to use the included SVGs. AniDot assumes that
+a sprite sheet is composed of square frames arranged from left to right, in the
+order "fully off" to "fully on". You will need to make sure the dimension of
+each frame matches the configured disc size in your program. So, following the
+convention of square frames, the height of the raster is the disc size.
+
+## Provided examples
+
+- basicLoop.py is an extremely basic AniDot window that loads the digits 0-9,
+  plus lowercase "a", to a small board when those keys are pressed. This script
+  is configured to use the "20px Ferranti" spritesheet, which mimics the
+  appearance of the once common Ferranti-Packard discs.
+- fontEditor.py is similar to basicLoop.py except it can save board states as
+  glyphs in a font file (test.df, a sample of which is provided). It expects the
+  same spritesheet as basicLoop.
+- showStringWithFont.py renders a random 16-bit hex number using the 'test.df'
+  font. Press the spacebar to load a new number. This one uses the "10px
+  MegaMAX" spritesheet, which is a rendition of discs from the Luminator GTI
+  MegaMAX destination sign.
