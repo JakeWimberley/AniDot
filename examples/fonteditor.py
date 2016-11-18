@@ -4,7 +4,8 @@ import anidot
 
 frameRate = 1200
 spriteSheetFile = 'ferranti20px.png'
-fontFile = 'test.df'
+fontFileIn = 'test.df'
+fontFileOut = 'new.test.df'
 
 pygame.init()
 clock = pygame.time.Clock()
@@ -14,7 +15,7 @@ xdiscs = 5
 ydiscs = 7
 sweepHorizontally = True
 delayBetweenSteps = 80
-board = anidot.Board(xdiscs,ydiscs,spriteSheetFile,discsize,nframes,frameRate,sweepHorizontally,delayBetweenSteps)
+board = anidot.Board(xdiscs,ydiscs,spriteSheetFile,discsize,nframes,sweepHorizontally,delayBetweenSteps)
 board.convert()
 charArray = []
 editChar = ''
@@ -34,9 +35,9 @@ while True:
             pygame.quit()
             break
         if currentEvent.dict['key'] == 278: # Home
-            fontx = anidot.Font('',1,1,fromfile=fontFile)
+            fontx = anidot.Font(fromfile=fontFileIn)
         if currentEvent.dict['key'] == 279: # End
-            fontx.saveToFile(fontFile)
+            fontx.saveToFile(fontFileOut)
         if currentEvent.dict['key'] == 13: # Enter
             fontx.setCharacter(prevEditChar,board.getArea(0,0,board.numDotsY-1,board.numDotsX-1))
         print currentEvent.dict['key']

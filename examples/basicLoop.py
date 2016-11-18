@@ -94,7 +94,7 @@ def main():
     ydiscs = 7
     sweepHorizontally = True
     delayBetweenSteps = 80
-    board = anidot.Board(xdiscs,ydiscs,spriteSheetFile,discsize,nframes,frameRate,sweepHorizontally,delayBetweenSteps)
+    board = anidot.Board(xdiscs,ydiscs,spriteSheetFile,discsize,nframes,sweepHorizontally,delayBetweenSteps)
     board.convert()
     charArray = []
     while True:

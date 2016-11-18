@@ -13,7 +13,9 @@ superhighways, as destination signs on some transit buses, and on TV game
 shows. (US users may remember the "big board" used in the final round of the
 Richard Dawson and Ray Combs versions of *Family Feud*.) The vast improvements
 in LED technology during the 1990s led to many displays being replaced with
-cheaper, more reliable, and often multi-color LED displays.
+cheaper, more reliable, and often multi-color LED displays. A compelling
+advantage of flip-dots, however, is that they only require power to *change*,
+i.e., they retain the display state without power.
 
 I am nostalgic about technology and have an appreciation for "character." To
 me, flip-dots, with their relatively low resolution, mechanical flaws and
@@ -75,8 +77,9 @@ convention of square frames, the height of the raster is the disc size.
   is configured to use the "20px Ferranti" spritesheet, which mimics the
   appearance of the once common Ferranti-Packard discs.
 - fontEditor.py is similar to basicLoop.py except it can save board states as
-  glyphs in a font file (test.df, a sample of which is provided). It expects the
-  same spritesheet as basicLoop.
+  glyphs in a font file (test.df, a sample of which is provided) and
+  demonstrates mouse interaction: click dots to flip. It expects the same
+  spritesheet as basicLoop.
 - showStringWithFont.py renders a random 16-bit hex number using the 'test.df'
   font. Press the spacebar to load a new number. This one uses the "10px
   MegaMAX" spritesheet, which is a rendition of discs from the Luminator GTI

@@ -96,7 +96,7 @@ xdiscs = 25
 ydiscs = 7
 sweepHorizontally = True
 delayBetweenSteps = 50
-board = anidot.Board(xdiscs,ydiscs,spriteSheetFile,discsize,nframes,frameRate,sweepHorizontally,delayBetweenSteps)
+board = anidot.Board(xdiscs,ydiscs,spriteSheetFile,discsize,nframes,sweepHorizontally,delayBetweenSteps)
 board.convert()
 intBlock = []
 font = anidot.Font('Test',xmax=5,ymax=7,baseline=None,gap=1)
@@ -110,7 +110,7 @@ while True:
     if currentEvent.type == pygame.QUIT:
         break
     if currentEvent.type == pygame.KEYDOWN:
-        if currentEvent.dict['unicode'] == 27:
+        if currentEvent.dict['key'] == pygame.K_ESCAPE:
             pygame.quit()
             break
         if currentEvent.dict['unicode'] == ' ':

@@ -9,31 +9,50 @@ ANIDOT_ANIMATION_START = 0
 
 class Dot(pygame.sprite.Sprite):
 
-    def __init__(self, spritesheet, patchwidth, numberframes, framerate, position):
+    def __init__(self, spritesheet, patchwidth, numberframes, position):
         self.spriteSheetImage = spritesheet
         self.patchWidth = patchwidth
-        self.numberOfFrames = numberframes
-        self.frameRate = framerate
+        self.numberOfFrames = numberframes # TODO should probably be called numberOfPatches
         self.positionInWindow = position
         self.animationFrameCount = 0
         self.animationPatchNumber = 0
-        self.activated = 0
+        self.activated = 0 # corresponds to the electrical state of the dot element
+        self.initialized = False
 
     def update(self):
+        """
+        Calculate the patch that represents the current angle of the disc.
+        If self.animationFrameCount is positive, animation is in progress.
+        Otherwise, nothing about the dot has changed since last update.
+        This will be called once per dot per pygame frame loop.
+        """
         if self.animationFrameCount > 0 and self.animationPatchNumber != self.numberOfFrames * self.activated:
-            self.animationFrameCount = (self.animationFrameCount + 1) % self.frameRate
-            if self.activated: # animate from 'on' to 'off'
+            self.animationFrameCount = self.animationFrameCount + 1 # originally I had (aFC) % self.frameRate, but can't remember why
+            if self.activated: # animate from 'off' to 'on' (remember patch 0 is supposed to be 'fully off')
                 self.animationPatchNumber = abs(self.animationFrameCount // self.numberOfFrames)
-            else: # animate from 'off' to 'on'
+            else: # animate from 'on' to 'off'
                 self.animationPatchNumber = self.numberOfFrames - (self.animationFrameCount // self.numberOfFrames)
+        else:
+            self.animationFrameCount = 0 # this resets animation, prevents self.draw() from being called unnecessarily
 
     def draw(self, onthissurface):
-        patchRect = (self.animationPatchNumber * self.patchWidth, 0,
-                       self.patchWidth, self.spriteSheetImage.get_height())
-        onthissurface.blit(self.spriteSheetImage,self.positionInWindow,patchRect)
+        """
+        Blit the patch from the spritesheet that corresponds to the current value of self.animationPatchNumber.
+        The patch number should have been set by self.update().
+        Don't do anything if animationFrameCount is zero (no animation in progress), except when the element is first drawn.
+        """
+        if self.animationFrameCount != 0 or self.initialized == False:
+            patchRect = (self.animationPatchNumber * self.patchWidth, 0,
+                           self.patchWidth, self.spriteSheetImage.get_height())
+            onthissurface.blit(self.spriteSheetImage,self.positionInWindow,patchRect)
+            self.initialized = True
 
     def flip(self):
         self.animationFrameCount = 1
+        self.activated ^= 1
+
+    def flipNow(self): #TODO
+        self.animationFrameCount = self.numberOfFrames - 2
         self.activated ^= 1
 
     def turnOn(self):
@@ -47,7 +66,7 @@ class Dot(pygame.sprite.Sprite):
 
 class Board():
 
-    def __init__(self,xdiscs,ydiscs,spritesheetfile,discsize,numberofframes,framerate,sweephoriz,animationdelay):
+    def __init__(self,xdiscs,ydiscs,spritesheetfile,discsize,numberofframes,sweephoriz,animationdelay):
         self.numDotsX = xdiscs
         self.numDotsY = ydiscs
         self.dotSizeX = discsize
@@ -76,7 +95,7 @@ class Board():
             self.dotTopsides.append(topside)
             for leftside in range(0,self.windowSizeX,self.dotSizeX):
                 if i == 0: self.dotLeftsides.append(leftside)
-                self.dotArray[i].append(Dot(self.spriteSheetImage, discsize, numberofframes, framerate, (leftside, topside)))
+                self.dotArray[i].append(Dot(self.spriteSheetImage, discsize, numberofframes, (leftside, topside)))
 
     def convert(self):
         "Call after __init__ to optimize imagery."
@@ -94,6 +113,7 @@ class Board():
                 self.dotArray[i][j].draw(self.backgroundSurface)
 
     def blit(self):
+        "Blit the background surface (onto which dots have been blitted) into the window."
         self.window.blit(self.backgroundSurface,(0,0))
 
     def cycle(self):
@@ -181,7 +201,7 @@ class Board():
 class Font():
 
     kind = 'Font'
-    def __init__(self,name,xmax,ymax,baseline=None,gap=1,fromfile=None):
+    def __init__(self,name=None,xmax=None,ymax=None,baseline=None,gap=1,fromfile=None):
         if fromfile is not None: # TODO some kind of security
             fileObj = pickle.load(open(fromfile,'rb'))
             try:
