@@ -4,105 +4,22 @@ import random
 
 frameRate = 1200
 spriteSheetFile = 'megamax-10px.png'
-fontFile = 'test.df'
-
-fontDef = {
-    'a': ['     ',
-          '0000 ',
-          '    0',
-          '00000',
-          '0   0',
-          '0   0',
-          ' 0000'],
-    '1': ['  0  ',
-          ' 00  ',
-          '  0  ',
-          '  0  ',
-          '  0  ',
-          '  0  ',
-          ' 000 '],
-    '2': [' 000 ',
-          '0   0',
-          '    0',
-          '   0 ',
-          '  0  ',
-          ' 0   ',
-          '00000'],
-    '3': [' 0000',
-          '    0',
-          '   0 ',
-          '  00 ',
-          '    0',
-          '0   0',
-          ' 000 '],
-    '4': ['   0 ',
-          '  00 ',
-          ' 0 0 ',
-          '0  0 ',
-          '00000',
-          '   0 ',
-          '   0 '],
-    '5': ['00000',
-          '0    ',
-          '0    ',
-          ' 000 ',
-          '    0',
-          '0   0',
-          ' 000 '],
-    '6': ['  00 ',
-          ' 0   ',
-          '0    ',
-          '0 00 ',
-          '00  0',
-          '0   0',
-          ' 000 '],
-    '7': ['00000',
-          '    0',
-          '   0 ',
-          '  0  ',
-          ' 0   ',
-          ' 0   ',
-          ' 0   '],
-    '8': [' 000 ',
-          '0   0',
-          '0   0',
-          ' 000 ',
-          '0   0',
-          '0   0',
-          ' 000 '],
-    '9': [' 000 ',
-          '0   0',
-          '0   0',
-          ' 000 ',
-          '  0  ',
-          ' 0   ',
-          '0    '],
-    '0': [' 000 ',
-          '0   0',
-          '0  00',
-          '0 0 0',
-          '00  0',
-          '0   0',
-          ' 000 '],
-}
-
-
+# download this font from https://hea-www.harvard.edu/~fine/Tech/x11fonts.html
+fontFile = '/home/jcw/fonz/atari-small.bdf'
 
 pygame.init()
 clock = pygame.time.Clock()
 discsize = 10
 nframes = 6
-xdiscs = 25
+xdiscs = 40
 ydiscs = 7
 sweepHorizontally = True
-delayBetweenSteps = 50
+delayBetweenSteps = 20
 board = anidot.Board(xdiscs,ydiscs,spriteSheetFile,discsize,nframes,sweepHorizontally,delayBetweenSteps)
 board.convert()
-intBlock = []
-font = anidot.Font('Test',xmax=5,ymax=7,baseline=None,gap=1)
-fontx = anidot.Font('',1,1,fromfile=fontFile)
-for c in fontDef:
-    font.setCharacter(c,fontDef[c])
+block = []
+baselineRow = None
+fontx = anidot.Font(fontFile)
 while True:
     clock.tick(frameRate)
     board.advanceAnimationStep()
@@ -114,9 +31,12 @@ while True:
             pygame.quit()
             break
         if currentEvent.dict['unicode'] == ' ':
-            intStr = '{0:04x}'.format(random.randint(0,2**16-1))
-            print 'int is {0:s}'.format(intStr)
-            intBlock = fontx.makeBlockFromString(intStr)
+            text = ''
+            for i in xrange(10):
+                text = text + chr(random.randint(33,122))
+            print 'text is {0:s}'.format(text)
+            (baselineRow, block) = fontx.makeBlockFromString(text)
+            print '\n'.join(block)
             board.startAnimation()
-    board.setBlockWithAnimation(0,0,intBlock)
+    board.setBlockWithAnimation(0,6,block,baselineRow)
     board.cycle()

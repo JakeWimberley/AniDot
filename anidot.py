@@ -1,11 +1,16 @@
 import pygame
 import pickle
+import sys
+
+sys.path.append('bdflib')
+from bdflib import reader as bdflibReader, model as bdflibModel
 
 # Constants
 ANIDOT_DOTBLOCK_OFF = ' '
 ANIDOT_DOTBLOCK_ON = 'X'
 ANIDOT_ANIMATION_STOP = -1
 ANIDOT_ANIMATION_START = 0
+
 
 class Dot(pygame.sprite.Sprite):
 
@@ -131,22 +136,34 @@ class Board():
                 else:
                     self.dotArray[i][j].turnOn()
 
-    def setBlockWithAnimation(self,xleft,ytop,array):
+    def setBlockWithAnimation(self,xleft,ytop,array,baseline=None):
         if not self.animationIsRunning():
             return
         # Do nothing if step is before or after the position of the block--
         #   hence checks of step value before copying block data
         if self.majorDimensionIsX:
+            # TODO not sure if < xleft makes any sense...why is this needed?
             if self.currentAnimationStepMajor < xleft or self.currentAnimationStepMajor >= xleft + len(array[0]):
                 return
-            for i, charRow in enumerate(array):
+            trimmedArray = []
+            # trim array down to the dims of the Board
+            for i, charRow in enumerate(array,start=ytop-baseline):
+                if i >= 0 and i < self.numDotsY: trimmedArray.append(charRow)
+            for i, charRow in enumerate(trimmedArray):
                 if charRow[self.currentAnimationStepMajor] == ANIDOT_DOTBLOCK_OFF:
                     self.dotArray[i][self.currentAnimationStepMajor].turnOff()
                 else:
                     self.dotArray[i][self.currentAnimationStepMajor].turnOn()
         else:
-            if self.currentAnimationStepMajor < ytop or self.currentAnimationStepMajor >= ytop + len(array):
+            # NOTE '< 0' used to be '< ytop' but that doesn't work with baseline concept
+            if self.currentAnimationStepMajor < 0 or self.currentAnimationStepMajor >= ytop + len(array):
                 return
+            if baseline is not None:
+                trimmedArray = []
+                # in this case we just have to trim array down to the dims of the Board
+                for i, charRow in enumerate(array,start=ytop-baseline):
+                    if i >= 0 and i < self.numDotsY: trimmedArray.append(charRow)
+                array = trimmedArray
             for j, charColumn in enumerate(array[self.currentAnimationStepMajor]):
                 if charColumn == ANIDOT_DOTBLOCK_OFF:
                     self.dotArray[self.currentAnimationStepMajor][j].turnOff()
@@ -200,63 +217,12 @@ class Board():
 
 class Font():
 
-    kind = 'Font'
-    def __init__(self,name=None,xmax=None,ymax=None,baseline=None,gap=1,fromfile=None):
-        if fromfile is not None: # TODO some kind of security
-            fileObj = pickle.load(open(fromfile,'rb'))
-            try:
-                if fileObj.kind != 'Font':
-                    raise AttributeError # not sure if this is best
-            except:
-                return
-            self.name = fileObj.name
-            self.maxDimX = fileObj.maxDimX
-            self.maxDimY = fileObj.maxDimY
-            self.baselineY = fileObj.baselineY
-            self.characters = fileObj.characters
-            self.defaultGap = fileObj.defaultGap
-        else:
-            self.name = name
-            self.maxDimX = xmax
-            self.maxDimY = ymax
-            self.baselineY = baseline
-            self.characters = {}
-            self.defaultGap = gap
-
-    def setCharacter(self,unichar,dots):
-        """
-        Given dot arrangement for a Unicode character, (re)define the glyph for
-        that character. unichar is the character. dots is either a list of strings,
-        or a list of lists of Dot() objects like that returned from Board.getBlock().
-        """
-        if type(dots) is list:
-            height = len(dots)
-            if type(dots[0]) is str:
-                # List of strings, each string representing a row in the character.
-                width = 0
-                for rowstring in dots:
-                    if len(rowstring) > width:
-                        width = len(rowstring)
-                self.characters[unichar] = {'dimX': width, 'dimY': height, 'glyph': dots}
-            if type(dots[0]) is list:
-                if type(dots[0][0]) is Dot:
-                    # List of dot objects. Get status of each and assign to the character array.
-                    dotsstrings = []
-                    width = len(dots[0])
-                    height = len(dots)
-                    for row in dots:
-                        rowstring = ''
-                        for col in row:
-                            if col.activated == 1:
-                                rowstring += ANIDOT_DOTBLOCK_ON
-                            else:
-                                rowstring += ANIDOT_DOTBLOCK_OFF
-                        dotsstrings.append(rowstring)
-                    self.characters[unichar] = {'dimX': width, 'dimY': height, 'glyph': dotsstrings}
-        else:
-            return False
+    def __init__(self,bdfFileName):
+        with open(bdfFileName,'r') as bdfFileObj:
+            self.bdf = bdflibReader.read_bdf(bdfFileObj)
 
     def sumWidthsOfCharactersInString(self,string):
+        # TODO bdf-ify
         totalWidth = 0
         for c in string:
             try:
@@ -265,27 +231,31 @@ class Font():
                 totalWidth += self.maxDimX
         return totalWidth
 
-    def makeBlockFromString(self,string):
+    def makeBlockFromString(self,string,rightToLeft=False):
+        '''
+        Using bdflib's glyph-combination capability, make a new glyph
+        to display all the characters in a string. Return value is a tuple:
+          (baselineRow, block)
+        baselineRow is the index of the row that is the text baseline
+        block is an AniDot block for use with Board.setBlock()
+        '''
         stringBlock = []
         if len(string) < 1: return
-        block = [[0] * (self.sumWidthsOfCharactersInString(string) + self.defaultGap *
-                        (len(string) - 1))] * self.maxDimY
-        for row in range(0,self.maxDimY):
-            marker = 0
-            for character in string:
-                for cell in self.characters[character]['glyph'][row]:
-                    if cell == ANIDOT_DOTBLOCK_OFF:
-                        block[row][marker] = 0
-                    else:
-                        block[row][marker] = 1
-                    marker += 1
-                marker += self.defaultGap
-            # copy row to output as a string
-            stringBlock.append(''.join(map(lambda x: (x and ANIDOT_DOTBLOCK_ON) or ' ', block[row])))
-        return stringBlock
-
-    def saveToFile(self,name):
-        pickle.dump(self,open(name,'wb'))
+        combinedGlyph = bdflibModel.Glyph('combined')
+        for c in string:
+            nextChar = self.bdf.glyphs_by_codepoint[ord(c)]
+            atX = combinedGlyph.bbW
+            atY = 0
+            # TODO rightToLeft capability
+            combinedGlyph.merge_glyph(nextChar,atX,atY)
+        # describe length of each row of decoded data (padded to multiple of 8)
+        decodedFormatStr = '{0:0' + str(combinedGlyph.bbW + (combinedGlyph.bbW % 8)) + 'b}'
+        for encodedRow in combinedGlyph.get_data():
+            # decode row data by making it a string of binary digits
+            cgRow = decodedFormatStr.format(int(encodedRow,16))
+            # reformat string of digits per AniDot spec
+            stringBlock.append(''.join(map(lambda c: (int(c) and ANIDOT_DOTBLOCK_ON) or ' ', cgRow)))
+        return (combinedGlyph.bbH + combinedGlyph.bbY, stringBlock)
 
 
 class Image():
