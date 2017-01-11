@@ -6,13 +6,14 @@ frameRate = 1200
 spriteSheetFile = 'megamax-10px.png'
 # download this font from https://hea-www.harvard.edu/~fine/Tech/x11fonts.html
 fontFile = '/home/jcw/fonz/atari-small.bdf'
+#fontFile = '/home/jcw/fonz/luminator_8.bdf'
 
 pygame.init()
 clock = pygame.time.Clock()
 discsize = 10
 nframes = 6
 xdiscs = 40
-ydiscs = 7
+ydiscs = 9
 sweepHorizontally = True
 delayBetweenSteps = 20
 board = anidot.Board(xdiscs,ydiscs,spriteSheetFile,discsize,nframes,sweepHorizontally,delayBetweenSteps)
@@ -33,10 +34,11 @@ while True:
         if currentEvent.dict['unicode'] == ' ':
             text = ''
             for i in xrange(10):
+                #text = text + chr(random.randint(0x41,0x5A))
                 text = text + chr(random.randint(33,122))
             print 'text is {0:s}'.format(text)
             (baselineRow, block) = fontx.makeBlockFromString(text)
             print '\n'.join(block)
             board.startAnimation()
-    board.setBlockWithAnimation(0,6,block,baselineRow)
+    board.setBlockWithAnimation(0,8,block,baselineRow)
     board.cycle()

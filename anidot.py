@@ -10,6 +10,11 @@ ANIDOT_DOTBLOCK_OFF = ' '
 ANIDOT_DOTBLOCK_ON = 'X'
 ANIDOT_ANIMATION_STOP = -1
 ANIDOT_ANIMATION_START = 0
+ANIDOT_ACTION_LOADIMAGE = pygame.USEREVENT + 100
+ANIDOT_ACTION_SHOWTEXT = ANIDOT_ACTION_LOADIMAGE + 1
+ANIDOT_ACTION_PAUSE = ANIDOT_ACTION_LOADIMAGE + 2
+ANIDOT_ACTION_RESTART = ANIDOT_ACTION_LOADIMAGE + 3
+ANIDOT_ACTIONS = (ANIDOT_ACTION_LOADIMAGE,ANIDOT_ACTION_SHOWTEXT,ANIDOT_ACTION_PAUSE,ANIDOT_ACTION_RESTART)
 
 
 class Dot(pygame.sprite.Sprite):
@@ -306,20 +311,13 @@ class Sequence():
     A predefined series of actions to be played back.
     Actions are:
       LoadImage - supply arg to load from filename or object - otherwise Image obj is saved in sequence
-      ShowText - arg to load from filename/object - otherwise Board.getArea() array saved in sequence
+      ShowText - args are font filename, string to display, (x,y)
       Pause - do nothing for specified number of seconds (arg)
       Restart - go back immediately to first action
     If a Restart is not encountered the sequence will stop after all actions have been executed.
     """
 
     kind = 'Sequence'
-    # actionArgs defines the permissible actions, and types for each's argument.
-    actionArgs = {
-        'LoadImage': (str, Image),
-        'ShowText': (str, Font),
-        'Pause': (float),
-        'Restart': ()
-    }
     def __init__(self,name,fromfile=None):
         if fromfile is not None: # TODO some kind of security
             fileObj = pickle.load(open(fromfile,'rb'))
@@ -336,38 +334,43 @@ class Sequence():
 
     def addAction(self,action,arg=None,position=None):
         """
-        :param action: one of the predefined action names, as string
+        :param action: one of the predefined ANIDOT_ACTION_* constants
         :param arg: filename, object, time spec, string, list
         :param position: Where to put the action in the sequence. If None, append.
         :return: None
         """
-        if action not in actionArgs:
+        if action not in ANIDOT_ACTIONS:
             raise RuntimeError('Invalid action')
             return
-        if action == 'LoadImage':
+        if action == ANIDOT_ACTION_LOADIMAGE:
             if isinstance(arg,str):
                 pass
                 # load from filename
             elif isinstance(arg,Image):
-                self.actions.append(arg)
+                actionArgs = {'imageObject':arg}
             else:
                 raise RuntimeError('Supplied argument is invalid for LoadImage action')
-        if action == 'ShowText':
-            if isinstance(arg,str):
-                # load from filename
-                pass
-            elif isinstance(arg,Image):
-                pass
-                # use image object
+        if action == ANIDOT_ACTION_SHOWTEXT:
+            # Put opened Font instances in a dictionary - reuse
+            if isinstance(arg[0],str) and isinstance(arg[1],str) and isinstance(arg[2],tuple):
+                actionArgs = {
+                    'fontFile': arg[0],
+                    'string': arg[1],
+                    'xy': arg[2]
+                }
             else:
-                raise RuntimeError('Supplied argument is invalid for LoadImage action')
-        if action == 'Pause':
+                raise RuntimeError('Supplied argument(s) invalid for ShowText action')
+        if action == ANIDOT_ACTION_PAUSE:
             if isinstance(arg,float):
-                # set value
-                pass
+                actionArgs = {'length':arg}
             else:
                 raise RuntimeError('Supplied argument is invalid for Pause action')
-        #self.actions.append or whatever
+        if action == ANIDOT_ACTION_RESTART:
+            actionArgs = {}
+        if position is not None:
+            self.actions.insert(position,pygame.event.Event(action,actionArgs))
+        else:
+            self.actions.append(pygame.event.Event(action,actionArgs))
 
 
     def next(self,boardObj,arg=None):
