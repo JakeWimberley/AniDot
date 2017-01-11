@@ -50,9 +50,9 @@ appear to change at the same time.
 In AniDot, animation is accomplished using sprite sheets to permit a
 high-resolution depiction of a real display. Consult the Pygame documentation
 for a complete explanation of sprite sheets. Each frame of the sheet represents
-a different position of a turning disc element, from 'fully off' to 'fully on'.
-Timing is carefully controlled, and the user can choose to make the status
-changes occur slowly enough that the sweeping effect can be replicated.
+a different position of a turning disc element. Timing is carefully controlled,
+and the user can choose to make the status changes occur slowly enough that the
+sweeping effect can be replicated.
 
 ## Getting started 
 
@@ -76,11 +76,7 @@ convention of square frames, the height of the raster is the disc size.
   plus lowercase "a", to a small board when those keys are pressed. This script
   is configured to use the "20px Ferranti" spritesheet, which mimics the
   appearance of the once common Ferranti-Packard discs.
-- fontEditor.py is similar to basicLoop.py except it can save board states as
-  glyphs in a font file (test.df, a sample of which is provided) and
-  demonstrates mouse interaction: click dots to flip. It expects the same
-  spritesheet as basicLoop.
-- showStringWithFont.py renders a random 16-bit hex number using the 'test.df'
-  font. Press the spacebar to load a new number. This one uses the "10px
-  MegaMAX" spritesheet, which is a rendition of discs from the Luminator GTI
-  MegaMAX destination sign.
+- showStringWithFont.py renders a random 6-character string using a BDF font.
+  Press the spacebar to load a new string. This one uses the "10px MegaMAX"
+  spritesheet, which is a rendition of discs from the Luminator GTI MegaMAX
+  destination sign.
