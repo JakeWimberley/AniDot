@@ -16,7 +16,6 @@ ydiscs = 16
 sweepHorizontally = True
 delayBetweenSteps = 50
 board = anidot.Board(xdiscs,ydiscs,spriteSheetFile,discsize,nframes,sweepHorizontally,delayBetweenSteps)
-board.convert()
 
 toggleDots = False
 lastI = -1
@@ -24,7 +23,7 @@ lastJ = -1
 inc = 0
 while True:
     clock.tick(frameRate)
-    #board.advanceAnimationStep()
+    board.advanceAnimationStep()
     currentEvent = pygame.event.poll()
     if currentEvent.type == pygame.QUIT:
         break

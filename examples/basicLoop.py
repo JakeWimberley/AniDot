@@ -5,13 +5,13 @@ import anidot
 frameRate = 1200
 spriteSheetFile = 'ferranti20px.png'
 fontDef = {
-    'a': ['     ',
-          '0000 ',
-          '    0',
-          '00000',
+    '0': [' 000 ',
           '0   0',
+          '0  00',
+          '0 0 0',
+          '00  0',
           '0   0',
-          ' 0000'],
+          ' 000 '],
     '1': ['  0  ',
           ' 00  ',
           '  0  ',
@@ -75,13 +75,6 @@ fontDef = {
           '  0  ',
           ' 0   ',
           '0    '],
-    '0': [' 000 ',
-          '0   0',
-          '0  00',
-          '0 0 0',
-          '00  0',
-          '0   0',
-          ' 000 '],
 }
 
 
@@ -95,8 +88,9 @@ def main():
     sweepHorizontally = True
     delayBetweenSteps = 80
     board = anidot.Board(xdiscs,ydiscs,spriteSheetFile,discsize,nframes,sweepHorizontally,delayBetweenSteps)
-    board.convert()
     charArray = []
+    counter = 0
+    changeTick = pygame.time.get_ticks()
     while True:
         clock.tick(frameRate)
         board.advanceAnimationStep()
@@ -107,14 +101,13 @@ def main():
             if currentEvent.dict['key'] == 27: # ESC
                 pygame.quit()
                 break
-            keyPressed = currentEvent.dict['unicode']
-            if keyPressed in fontDef.keys():
-                charArray = fontDef[keyPressed]
-                board.startAnimation()
-        if currentEvent.type == pygame.MOUSEBUTTONDOWN:
-            (clickedi, clickedj) = board.getDotByWindowCoordinates(currentEvent.dict['pos'])
-            board.dotArray[clickedi][clickedj].flip()
-        board.setBlockWithAnimation(0,0,charArray)
+        nowTick = pygame.time.get_ticks()
+        if nowTick - changeTick > 1000:
+            charArray = fontDef[str(counter)]
+            board.setBlock(0,0,charArray)
+            board.startAnimation()
+            counter = (counter + 1) % 10
+            changeTick = nowTick
         board.cycle()
 
 

@@ -57,21 +57,21 @@ class Dot(pygame.sprite.Sprite):
             onthissurface.blit(self.spriteSheetImage,self.positionInWindow,patchRect)
             self.initialized = True
 
-    def flip(self):
+    def flip(self,animate=True):
         self.animationFrameCount = 1
-        self.activated ^= 1
+        if animate: self.activated ^= 1
 
     def flipNow(self): #TODO
         self.animationFrameCount = self.numberOfFrames - 2
         self.activated ^= 1
 
-    def turnOn(self):
+    def turnOn(self,animate=True):
         self.activated = 1
-        self.animationFrameCount = 1
+        if animate: self.animationFrameCount = 1
 
-    def turnOff(self):
+    def turnOff(self,animate=True):
         self.activated = 0
-        self.animationFrameCount = 1
+        if animate: self.animationFrameCount = 1
 
 
 class Board():
@@ -106,11 +106,10 @@ class Board():
             for leftside in range(0,self.windowSizeX,self.dotSizeX):
                 if i == 0: self.dotLeftsides.append(leftside)
                 self.dotArray[i].append(Dot(self.spriteSheetImage, discsize, numberofframes, (leftside, topside)))
-
-    def convert(self):
-        "Call after __init__ to optimize imagery."
+        
         self.spriteSheetImage.convert()
         self.backgroundSurface = self.backgroundSurface.convert()
+
 
     def update(self):
         for i in range(0,self.numDotsY):
@@ -128,56 +127,51 @@ class Board():
 
     def cycle(self):
         "Display changes made during this frame. Call at end of pygame frame loop."
+        self.animate()
         self.update()
         self.draw()
         self.blit()
         pygame.display.flip()
 
-    def setBlock(self,xleft,ytop,array):
+    def setBlock(self,ytop,xleft,array,baseline=0):
+        arrayYDim = len(array)
         for i, charRow in enumerate(array):
+            if baseline != 0:
+                iDot = i + ytop - baseline + 1
+            else:
+                iDot = i + ytop
+            if iDot < 0: continue
             for j, charColumn in enumerate(charRow):
-                if charColumn == ANIDOT_DOTBLOCK_OFF:
-                    self.dotArray[i][j].turnOff()
-                else:
-                    self.dotArray[i][j].turnOn()
+                jDot = j + xleft
+                if jDot < 0: continue
+                try:
+                    if charColumn == ANIDOT_DOTBLOCK_OFF:
+                        self.dotArray[iDot][jDot].turnOff(animate=False)
+                    else:
+                        self.dotArray[iDot][jDot].turnOn(animate=False)
+                except IndexError:
+                    pass # outside the Board edge
 
-    def setBlockWithAnimation(self,xleft,ytop,array,baseline=None):
+    def animate(self):
+        "Manage the animation: change the dots at the current animation step."
         if not self.animationIsRunning():
             return
-        # Do nothing if step is before or after the position of the block--
-        #   hence checks of step value before copying block data
         if self.majorDimensionIsX:
-            # TODO not sure if < xleft makes any sense...why is this needed?
-            if self.currentAnimationStepMajor < xleft or self.currentAnimationStepMajor >= xleft + len(array[0]):
-                return
-            trimmedArray = []
-            # trim array down to the dims of the Board
-            for i, charRow in enumerate(array,start=ytop-baseline):
-                if i >= 0 and i < self.numDotsY: trimmedArray.append(charRow)
-            for i, charRow in enumerate(trimmedArray):
-                if charRow[self.currentAnimationStepMajor] == ANIDOT_DOTBLOCK_OFF:
+            for i in xrange(self.numDotsY):
+                if self.dotArray[i][self.currentAnimationStepMajor].activated == 0:
                     self.dotArray[i][self.currentAnimationStepMajor].turnOff()
                 else:
                     self.dotArray[i][self.currentAnimationStepMajor].turnOn()
         else:
-            # NOTE '< 0' used to be '< ytop' but that doesn't work with baseline concept
-            if self.currentAnimationStepMajor < 0 or self.currentAnimationStepMajor >= ytop + len(array):
-                return
-            if baseline is not None:
-                trimmedArray = []
-                # in this case we just have to trim array down to the dims of the Board
-                for i, charRow in enumerate(array,start=ytop-baseline):
-                    if i >= 0 and i < self.numDotsY: trimmedArray.append(charRow)
-                array = trimmedArray
-            for j, charColumn in enumerate(array[self.currentAnimationStepMajor]):
-                if charColumn == ANIDOT_DOTBLOCK_OFF:
+            for j in xrange(self.numDotsX):
+                if self.dotArray[self.currentAnimationStepMajor][j].activated == 0:
                     self.dotArray[self.currentAnimationStepMajor][j].turnOff()
                 else:
                     self.dotArray[self.currentAnimationStepMajor][j].turnOn()
 
     def advanceAnimationStep(self):
-        "Move to the next animation step--but only if animation has started, and the specified amount of time has passed since the last frame"
-        if pygame.time.get_ticks() - self.timeOfLastStep >= self.lengthOfAnimationStep and self.animationIsRunning():
+        "Move to the next animation step--but only if animation has started, and the specified amount of time has passed since the last frame. This should be called at the beginning of the pygame frame loop, preferably after clock.tick()."
+        if self.animationIsRunning() and pygame.time.get_ticks() - self.timeOfLastStep >= self.lengthOfAnimationStep:
             self.currentAnimationStepMajor += 1
             # if step is at the end of the dimension, stop animation
             if self.majorDimensionIsX:
@@ -219,6 +213,11 @@ class Board():
             area.append(row)
         return area
 
+    def clear(self,animate=True):
+        for i in xrange(self.numDotsY):
+            for j in xrange(self.numDotsX):
+                self.dotArray[i][j].turnOff(animate)
+
 
 class Font():
 
@@ -245,7 +244,7 @@ class Font():
         block is an AniDot block for use with Board.setBlock()
         '''
         stringBlock = []
-        if len(string) < 1: return
+        if len(string) < 1: return (None,[[]])
         combinedGlyph = bdflibModel.Glyph('combined')
         for c in string:
             nextChar = self.bdf.glyphs_by_codepoint[ord(c)]
