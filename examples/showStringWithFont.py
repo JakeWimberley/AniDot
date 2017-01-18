@@ -4,7 +4,7 @@ import random
 
 frameRate = 1200
 spriteSheetFile = 'megamax-10px.png'
-fontFile = '/home/jcw/fonz/luminator_8.bdf'
+fontFile = '../fonts/luminator_8.bdf'
 # if you want to try unicode,
 # use this font from https://hea-www.harvard.edu/~fine/Tech/x11fonts.html
 # fontFile = '/home/jcw/fonz/unifont-9.0.04.bdf'
@@ -32,7 +32,7 @@ while True:
             text = text + chr(random.randint(0x41,0x5A))
             #text = text + chr(random.randint(33,122))
         print 'text is {0:s}, at {1:d},{2:d}'.format(text,clickedi,clickedj)
-        (baselineRow, block) = fontx.makeBlockFromString(text)
+        (baselineRow, block) = fontx.makeBlockFromString(text,1)
         print '\n'.join(block)
         board.setBlock(clickedi,clickedj,block,baselineRow)
         board.startAnimation()

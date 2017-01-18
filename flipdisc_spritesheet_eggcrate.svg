@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 744.09448819 1052.3622047"
+   id="svg3458"
+   version="1.1"
+   inkscape:version="0.91 r13725"
+   sodipodi:docname="flipdisc_spritesheet_eggcrate.svg">
+  <defs
+     id="defs3460" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.4"
+     inkscape:cx="284.85809"
+     inkscape:cy="720"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1600"
+     inkscape:window-height="791"
+     inkscape:window-x="0"
+     inkscape:window-y="31"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata3463">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       id="rect3466"
+       width="150"
+       height="150"
+       x="-497.38107"
+       y="217.00504"
+       transform="scale(-1,1)"
+       inkscape:export-filename="/home/jcw/git/AniDot/examples/eggcrate.png"
+       inkscape:export-xdpi="4.8000002"
+       inkscape:export-ydpi="4.8000002" />
+    <rect
+       y="217.00504"
+       x="-347.38107"
+       height="150"
+       width="150"
+       id="rect3470"
+       transform="scale(-1,1)"
+       inkscape:export-filename="/home/jcw/git/AniDot/examples/eggcrate.png"
+       inkscape:export-xdpi="4.8000002"
+       inkscape:export-ydpi="4.8000002" />
+    <rect
+       id="rect3472"
+       width="150"
+       height="150"
+       x="-197.38106"
+       y="217.00504"
+       transform="scale(-1,1)"
+       inkscape:export-filename="/home/jcw/git/AniDot/examples/eggcrate.png"
+       inkscape:export-xdpi="4.8000002"
+       inkscape:export-ydpi="4.8000002" />
+    <circle
+       style="fill:#ffffff"
+       id="path3474"
+       cx="-422.38107"
+       cy="292.00504"
+       r="50"
+       transform="scale(-1,1)"
+       inkscape:export-filename="/home/jcw/git/AniDot/examples/eggcrate.png"
+       inkscape:export-xdpi="4.8000002"
+       inkscape:export-ydpi="4.8000002" />
+  </g>
+</svg>

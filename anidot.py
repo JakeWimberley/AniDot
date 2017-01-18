@@ -1,6 +1,4 @@
-import pygame
-import pickle
-import sys
+import pygame, pickle, sys
 
 sys.path.append('bdflib')
 from bdflib import reader as bdflibReader, model as bdflibModel
@@ -235,7 +233,7 @@ class Font():
                 totalWidth += self.maxDimX
         return totalWidth
 
-    def makeBlockFromString(self,string,rightToLeft=False):
+    def makeBlockFromString(self,string,tracking=0,rightToLeft=False):
         '''
         Using bdflib's glyph-combination capability, make a new glyph
         to display all the characters in a string. Return value is a tuple:
@@ -246,19 +244,24 @@ class Font():
         stringBlock = []
         if len(string) < 1: return (None,[[]])
         combinedGlyph = bdflibModel.Glyph('combined')
+        firstChar = True
         for c in string:
             nextChar = self.bdf.glyphs_by_codepoint[ord(c)]
-            atX = combinedGlyph.bbW
+            if firstChar == True: atX = combinedGlyph.bbW
+            else: atX = combinedGlyph.bbW + tracking
             atY = 0
             # TODO rightToLeft capability
             combinedGlyph.merge_glyph(nextChar,atX,atY)
+            firstChar = False
         # describe length of each row of decoded data (padded to multiple of 8)
-        decodedFormatStr = '{0:0' + str(combinedGlyph.bbW + (combinedGlyph.bbW % 8)) + 'b}'
+        decodedFormatStr = '{0:0' + str(combinedGlyph.bbW - (combinedGlyph.bbW % 8)) + 'b}'
+        #decodedFormatStr = '{0:0' + str(combinedGlyph.bbW + (combinedGlyph.bbW % 8)) + 'b}'
         for encodedRow in combinedGlyph.get_data():
-            # decode row data by making it a string of binary digits
-            cgRow = decodedFormatStr.format(int(encodedRow,16))
+            # each character in the encoded string represents 4 dots
+            decodedRow = ''
+            for char in encodedRow: decodedRow += '{0:04b}'.format(int(char,16))
             # reformat string of digits per AniDot spec
-            stringBlock.append(''.join(map(lambda c: (int(c) and ANIDOT_DOTBLOCK_ON) or ' ', cgRow)))
+            stringBlock.append(''.join(map(lambda c: (int(c) and ANIDOT_DOTBLOCK_ON) or ' ', decodedRow)))
         return (combinedGlyph.bbH + combinedGlyph.bbY, stringBlock)
 
 
